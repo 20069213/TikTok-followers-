@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التبادل والدعم</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 450px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 { color: #333; margin-bottom: 5px; }
+        .points-box {
+            font-size: 26px;
+            color: #27ae60;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            direction: ltr;
+            text-align: right;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover { background-color: #2980b9; }
+        .earn-btn { background-color: #2ecc71; }
+        .earn-btn:hover { background-color: #27ae60; }
+        
+        .task-list {
+            margin-top: 20px;
+            text-align: right;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .task-item {
+            background: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+        }
+        .task-item a {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>منصة تبادل المتابعات</h2>
+        <p>رصيدك الحالي من النقاط:</p>
+        <div class="points-box" id="pointsDisplay">0</div>
+
+        <button class="earn-btn" onclick="earnPoints()">اضغط هنا لكسب 10 نقاط</button>
+        
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>اطلب متابعين لحسابك</h3>
+        <input type="text" id="tiktokLink" placeholder="ضع رابط حسابك على تيك توك هنا">
+        <button onclick="requestBoost()">إضافة طلب (-50 نقطة)</button>
+
+        <div class="task-list">
+            <h3>قائمة الحسابات المتاحة للمتابعة:</h3>
+            <div id="tasksContainer">
+                <p style="color: #888; text-align: center;">جاري تحميل المهام من السيرفر...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- استدعاء مكتبات Firebase السحابية -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // ⚠️ استبدل البيانات التالية ببيانات مشروعك الخاصة من Firebase Console
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // تهيئة Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // إدارة النقاط محلياً (أو ربطها بعد ذلك بحساب المستخدم)
+        let points = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 0;
+        document.getElementById('pointsDisplay').innerText = points;
+
+        function updatePoints(newPoints) {
+            points = newPoints;
+            localStorage.setItem('userPoints', points);
+            document.getElementById('pointsDisplay').innerText = points;
+        }
+
+        // كسب النقاط
+        function earnPoints() {
+            updatePoints(points + 10);
+            alert('مبروك! حصلت على 10 نقاط.');
+        }
+
+        // إضافة طلب جديد لقاعدة البيانات في Firebase
+        function requestBoost() {
+            let link = document.getElementById('tiktokLink').value.trim();
+            
+            if (!link) {
+                alert('الرجاء إدخال رابط الحساب أولاً!');
+                return;
+            }
+
+            if (points >= 50) {
+                // إضافة الطلب إلى مجموعة "tasks" في Firestore
+                db.collection("tasks").add({
+                    link: link,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    updatePoints(points - 50);
+                    document.getElementById('tiktokLink').value = '';
+                    alert('تم نشر طلبك على السيرفر بنجاح وسيظهر للجميع!');
+                })
+                .catch((error) => {
+                    alert('حدث خطأ أثناء الإضافة: ' + error.message);
+                });
+            } else {
+                alert('نقاطك لا تكفي! اجمع 50 نقطة على الأقل.');
+            }
+        }
+
+        // الاستماع المباشر للطلبات الموجودة على السيرفر لعرضها فوراً
+        db.collection("tasks").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+            let container = document.getElementById('tasksContainer');
+            container.innerHTML = '';
+
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="color: #888; text-align: center;">لا توجد طلبات حالياً، كن أول من يضيف!</p>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                let task = doc.data();
+                container.innerHTML += `
+                    <div class="task-item">
+                        <span>حساب للمتابعة</span>
+                        <a href="${task.link}" target="_blank" onclick="completeTask()">تابع واكسب (+10)</a>
+                    </div>
+                `;
+            });
+        });
+
+        // زيادة النقاط عند المتابعة
+        function completeTask() {
+            setTimeout(() => {
+                updatePoints(points + 10);
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
