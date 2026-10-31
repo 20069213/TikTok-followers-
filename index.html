@@ -3,113 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التبادل والدعم</title>
+    <title>منصة عبده سعد التعليمية والخدمية</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
         }
-        .container {
-            max-width: 450px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+
+        .container, .admin-container {
+            max-width: 480px;
+            margin: 15px auto;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
         }
-        h2 { color: #333; margin-bottom: 5px; }
-        .points-box {
-            font-size: 26px;
-            color: #27ae60;
+
+        /* قسم الترحيب والعلامة التجارية */
+        .welcome-header {
+            background: linear-gradient(135deg, #0284c7, #7c3aed);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .welcome-header h1 {
+            margin: 0 0 5px 0;
+            font-size: 22px;
+            color: #ffffff;
+        }
+        .welcome-header p {
+            margin: 0;
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+
+        h2 { color: var(--primary); margin-bottom: 10px; font-size: 20px; }
+        p.subtitle { color: var(--text-sub); font-size: 13px; margin-bottom: 15px; }
+
+        .points-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
             margin: 15px 0;
+        }
+        .points-box {
+            font-size: 32px;
+            color: var(--success);
+            margin-top: 5px;
             font-weight: bold;
         }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 1px solid var(--border-color);
+            background: #0f172a;
+            color: white;
+            border-radius: 8px;
             font-size: 14px;
-            direction: ltr;
-            text-align: right;
             box-sizing: border-box;
+            transition: border-color 0.3s;
         }
+        select:focus, input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
         button {
-            background-color: #3498db;
+            background-color: var(--primary);
             color: white;
             border: none;
             padding: 12px 20px;
             margin: 8px 0;
             width: 100%;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
         }
-        button:hover { background-color: #2980b9; }
-        .earn-btn { background-color: #2ecc71; }
-        .earn-btn:hover { background-color: #27ae60; }
+        button:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        
+        .earn-btn { background-color: #16a34a; box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3); }
+        .earn-btn:hover { background-color: #15803d; }
+        
+        .admin-btn { background-color: #d97706; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3); margin-top: 20px; }
+        .admin-btn:hover { background-color: #b45309; }
         
         .task-list {
             margin-top: 20px;
             text-align: right;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
             padding-top: 15px;
         }
         .task-item {
-            background: #f9f9f9;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 5px;
+            background: #0f172a;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
-        .task-item a {
-            background: #e74c3c;
-            color: white;
-            padding: 6px 12px;
-            text-decoration: none;
+        .task-badge {
+            font-size: 11px;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 13px;
+            background: #334155;
+            color: var(--primary);
             font-weight: bold;
         }
+        .task-item a {
+            background: var(--danger);
+            color: white;
+            padding: 7px 14px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .task-item a:hover { background: #dc2626; }
+        
+        .delete-btn {
+            background-color: var(--danger) !important;
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            width: auto !important;
+            box-shadow: none !important;
+        }
+        .delete-btn:hover { background-color: #dc2626 !important; }
+        
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>منصة تبادل المتابعات</h2>
-        <p>رصيدك الحالي من النقاط:</p>
-        <div class="points-box" id="pointsDisplay">0</div>
-
-        <button class="earn-btn" onclick="earnPoints()">اضغط هنا لكسب 10 نقاط</button>
+    <!-- قسم التطبيق الرئيسي -->
+    <div id="mainApp" class="container">
         
-        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <!-- قسم الترحيب الجديد -->
+        <div class="welcome-header">
+            <h1>✨ منصة عبده سعد</h1>
+            <p>بوابتك الأولى لزيادة التفاعلات والمتابعين لجميع المنصات بكل سهولة وأمان.</p>
+        </div>
 
-        <h3>اطلب متابعين لحسابك</h3>
-        <input type="text" id="tiktokLink" placeholder="ضع رابط حسابك على تيك توك هنا">
-        <button onclick="requestBoost()">إضافة طلب (-50 نقطة)</button>
+        <div class="points-card">
+            <span style="color: var(--text-sub); font-size: 14px;">رصيدك الحالي من النقاط</span>
+            <div class="points-box" id="pointsDisplay">0</div>
+        </div>
+
+        <button class="earn-btn" onclick="earnPoints()">⭐ اضغط هنا لكسب 10 نقاط سريعاً</button>
+        
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+        <h2>🚀 إطلاق حملة جديدة</h2>
+        <select id="platformSelect">
+            <option value="تيك توك">🎵 تيك توك (TikTok)</option>
+            <option value="إنستغرام">📸 إنستغرام (Instagram)</option>
+            <option value="فيسبوك">📘 فيسبوك (Facebook)</option>
+            <option value="يوتيوب">▶️ يوتيوب (YouTube)</option>
+        </select>
+
+        <select id="serviceSelect">
+            <option value="متابعين">👥 متابعين / مشتركين</option>
+            <option value="لايكات">إعجابات / لايكات</option>
+            <option value="مشاهدات">👁️ مشاهدات</option>
+            <option value="تعليقات">💬 تعليقات</option>
+        </select>
+
+        <input type="text" id="targetLink" placeholder="ضع رابط (الحساب / المنشور) هنا" dir="ltr" style="text-align: right;">
+        <button onclick="requestBoost()">إنشاء الحملة (-50 نقطة)</button>
 
         <div class="task-list">
-            <h3>قائمة الحسابات المتاحة للمتابعة:</h3>
+            <h2>📋 الحملات والمهام المتاحة</h2>
             <div id="tasksContainer">
-                <p style="color: #888; text-align: center;">جاري تحميل المهام من السيرفر...</p>
+                <p style="color: var(--text-sub); text-align: center;">جاري تحميل المهام من السيرفر...</p>
             </div>
         </div>
+
+        <button class="admin-btn" onclick="openAdminPanel()">🔐 لوحة تحكم المشرف (Admin)</button>
     </div>
 
-    <!-- استدعاء مكتبات Firebase السحابية -->
+    <!-- لوحة تحكم الأدمن -->
+    <div id="adminPanel" class="admin-container hidden">
+        <h2>⚙️ لوحة تحكم المشرف</h2>
+        <p class="subtitle">التحكم الكامل ومسح الطلبات المخالفة</p>
+        
+        <div class="task-list">
+            <h2>طلبات المستخدمين النشطة:</h2>
+            <div id="adminTasksContainer">
+                <p style="color: var(--text-sub); text-align: center;">جاري التحميل...</p>
+            </div>
+        </div>
+
+        <button style="background-color: #64748b; margin-top: 20px;" onclick="closeAdminPanel()">⬅️ العودة للموقع الرئيسي</button>
+    </div>
+
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ⚠️ استبدل البيانات التالية ببيانات مشروعك الخاصة من Firebase Console
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -119,11 +241,9 @@
             appId: "YOUR_APP_ID"
         };
 
-        // تهيئة Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // إدارة النقاط محلياً (أو ربطها بعد ذلك بحساب المستخدم)
         let points = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 0;
         document.getElementById('pointsDisplay').innerText = points;
 
@@ -133,66 +253,111 @@
             document.getElementById('pointsDisplay').innerText = points;
         }
 
-        // كسب النقاط
         function earnPoints() {
             updatePoints(points + 10);
-            alert('مبروك! حصلت على 10 نقاط.');
+            alert('تم إضافة 10 نقاط لرصيدك بنجاح!');
         }
 
-        // إضافة طلب جديد لقاعدة البيانات في Firebase
         function requestBoost() {
-            let link = document.getElementById('tiktokLink').value.trim();
+            let platform = document.getElementById('platformSelect').value;
+            let service = document.getElementById('serviceSelect').value;
+            let link = document.getElementById('targetLink').value.trim();
             
             if (!link) {
-                alert('الرجاء إدخال رابط الحساب أولاً!');
+                alert('الرجاء وضع الرابط أولاً!');
                 return;
             }
 
             if (points >= 50) {
-                // إضافة الطلب إلى مجموعة "tasks" في Firestore
-                db.collection("tasks").add({
+                db.collection("all_services").add({
+                    platform: platform,
+                    service: service,
                     link: link,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 })
                 .then(() => {
                     updatePoints(points - 50);
-                    document.getElementById('tiktokLink').value = '';
-                    alert('تم نشر طلبك على السيرفر بنجاح وسيظهر للجميع!');
+                    document.getElementById('targetLink').value = '';
+                    alert(`تم إطلاق حملة ${service} على ${platform} بنجاح!`);
                 })
                 .catch((error) => {
-                    alert('حدث خطأ أثناء الإضافة: ' + error.message);
+                    alert('خطأ: ' + error.message);
                 });
             } else {
-                alert('نقاطك لا تكفي! اجمع 50 نقطة على الأقل.');
+                alert('نقاطك لا تكفي! تحتاج إلى 50 نقطة.');
             }
         }
 
-        // الاستماع المباشر للطلبات الموجودة على السيرفر لعرضها فوراً
-        db.collection("tasks").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        // جلب وعرض المهام
+        db.collection("all_services").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
             let container = document.getElementById('tasksContainer');
+            let adminContainer = document.getElementById('adminTasksContainer');
+            
             container.innerHTML = '';
+            adminContainer.innerHTML = '';
 
             if (snapshot.empty) {
-                container.innerHTML = '<p style="color: #888; text-align: center;">لا توجد طلبات حالياً، كن أول من يضيف!</p>';
+                container.innerHTML = '<p style="color: var(--text-sub); text-align: center;">لا توجد حملات حالياً، كن أول من يضيف!</p>';
+                adminContainer.innerHTML = '<p style="color: var(--text-sub); text-align: center;">لا توجد طلبات لإدارتها!</p>';
                 return;
             }
 
             snapshot.forEach((doc) => {
                 let task = doc.data();
+                let taskId = doc.id;
+
                 container.innerHTML += `
                     <div class="task-item">
-                        <span>حساب للمتابعة</span>
-                        <a href="${task.link}" target="_blank" onclick="completeTask()">تابع واكسب (+10)</a>
+                        <div>
+                            <span class="task-badge">${task.platform}</span>
+                            <span style="font-size: 13px; color: #cbd5e1; margin-right: 5px;">${task.service}</span>
+                        </div>
+                        <a href="${task.link}" target="_blank" onclick="completeTask()">نفذ واكسب (+10)</a>
+                    </div>
+                `;
+
+                adminContainer.innerHTML += `
+                    <div class="task-item">
+                        <div style="font-size: 12px; text-align: right; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+                            <span class="task-badge">${task.platform}</span> <b>${task.service}</b><br>
+                            <a href="${task.link}" target="_blank" style="color: var(--primary); font-size: 11px;">${task.link}</a>
+                        </div>
+                        <button class="delete-btn" onclick="deleteTask('${taskId}')">حذف 🗑️</button>
                     </div>
                 `;
             });
         });
 
-        // زيادة النقاط عند المتابعة
         function completeTask() {
             setTimeout(() => {
                 updatePoints(points + 10);
             }, 1000);
+        }
+
+        function openAdminPanel() {
+            let password = prompt("الرجاء إدخال كلمة سر المشرف:");
+            // يمكنك تغيير كلمة المرور هنا من "123" إلى أي كلمة سر خاصة بك
+            if (password === "123") {
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else if (password !== null) {
+                alert("كلمة السر غير صحيحة!");
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+        }
+
+        function deleteTask(id) {
+            if (confirm("هل أنت متأكد من حذف هذا الطلب نهائياً؟")) {
+                db.collection("all_services").doc(id).delete().then(() => {
+                    alert("تم حذف الطلب بنجاح!");
+                }).catch((error) => {
+                    alert("حدث خطأ أثناء الحذف: " + error.message);
+                });
+            }
         }
     </script>
 
